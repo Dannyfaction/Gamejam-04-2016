@@ -22,6 +22,7 @@ public class PlayerControl : MonoBehaviour
     private float initialSpeed;
     private Vector3 initialPosition;
     private float boostTimer = 0;
+    private bool isBoosting;
 
     void Start()
     {
@@ -56,12 +57,20 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetAxis("Vertical") == 0)
         {
             xAngle = 0;
+            if (!isBoosting)
+            {
+                speed = 5f;
+            }
         }
 
         //For moving up and down
         else if (Input.GetAxis("Vertical") > 0)
         {
             xAngle = 1;
+            if (!isBoosting)
+            {
+                speed = 7.5f;
+            }
             if (transform.rotation.eulerAngles.z > 80 && transform.rotation.eulerAngles.z < 82)
             {
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 80);
@@ -72,7 +81,10 @@ public class PlayerControl : MonoBehaviour
         else if (Input.GetAxis("Vertical") < 0)
         {
             xAngle = -1;
-
+            if (!isBoosting)
+            {
+                speed = 2.5f;
+            }
             if (transform.rotation.eulerAngles.z > 80 && transform.rotation.eulerAngles.z < 90)
             {
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 80);
@@ -121,6 +133,7 @@ public class PlayerControl : MonoBehaviour
         {
             if (boostLeft > 0 && boostTimer <= 0)
             {
+                isBoosting = true;
                 speed = 10f;
                 boostTimer = 200;
                 boostLeft--;
@@ -154,14 +167,18 @@ public class PlayerControl : MonoBehaviour
     //Resetting the position, rotation and Boosts once you have crashed into the level
     void OnCollisionEnter(Collision other)
     {
-        transform.position = initialPosition;
-        transform.rotation = Quaternion.identity;
-        boostLeft = 2;
+        if (other.gameObject.name == "Cube")
+        {
+            transform.position = initialPosition;
+            transform.rotation = Quaternion.identity;
+            boostLeft = 2;
+        }
     }
 
     //Reducing the speed once boost is over
     void ReduceSpeed()
     {
+        isBoosting = false;
         speed = initialSpeed;
     }
 }
