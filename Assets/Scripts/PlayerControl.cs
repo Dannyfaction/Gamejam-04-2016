@@ -57,20 +57,12 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetAxis("Vertical") == 0)
         {
             xAngle = 0;
-            if (!isBoosting)
-            {
-                speed = 5f;
-            }
         }
 
         //For moving up and down
         else if (Input.GetAxis("Vertical") > 0)
         {
             xAngle = 1;
-            if (!isBoosting)
-            {
-                speed = 7.5f;
-            }
             if (transform.rotation.eulerAngles.z > 80 && transform.rotation.eulerAngles.z < 82)
             {
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 80);
@@ -81,10 +73,6 @@ public class PlayerControl : MonoBehaviour
         else if (Input.GetAxis("Vertical") < 0)
         {
             xAngle = -1;
-            if (!isBoosting)
-            {
-                speed = 2.5f;
-            }
             if (transform.rotation.eulerAngles.z > 80 && transform.rotation.eulerAngles.z < 90)
             {
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 80);
